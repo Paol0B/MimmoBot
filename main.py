@@ -1,60 +1,63 @@
+import asyncio
+
 import discord
-import pyaudio
-import speech_recognition as sr
 
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
+import function
+
+# Token del bot
+TOKEN = ""
+
+# Crea un'istanza del bot
+client = discord.Client(intents=discord.Intents.all())
 
 @client.event
 async def on_ready():
-    print("Il bot è pronto!")
+    print("The bot is ready.")
+
+@client.event
+async def on_member_join(member):
+    channel = member.voice.channel
+    await channel.connect()
+
+@client.event
+async def on_voice_state_update(member, before, after):
+    if after.channel is not None and before.channel is None:
+        channel = member.voice.channel
+        await channel.connect()
 
 @client.event
 async def on_message(message):
-    if message.author != client.user:
-        if message.content.startswith("ping"):
-            await message.channel.send("pong")
+    # Controlla se il messaggio contiene il comando `/3060`
+    if message.content.startswith("/3060"):
+        # Ottieni l'utente che ha scritto il messaggio
+        member = message.author
 
-# Avvia il bot
-async def on_ready():
-    print("Il bot è pronto!")
+        # Ottieni il canale vocale in cui si trova l'utente
+        channel = member.voice.channel
 
-# Crea un'istanza di pyaudio
-p = pyaudio.PyAudio()
+        # Entra in chiamata
+        await channel.connect()
+        await listen_and_disconnect(client)
+    elif message.content.startswith("/pepsi"):
+        await message.guild.voice_client.disconnect()
 
-# Crea un flusso di input audio
-stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
-
-# Funzione che ascolta e riconosce la parola "3060"
-async def ascolta(utente):
+async def listen_and_disconnect(client):
+    # Ascolta in loop
+    print("Listening for 3060...")
     while True:
-        # Legge l'audio
-        audio_data = stream.read(1024)
+        # Ascolta per 5 secondi
+        await asyncio.sleep(5)
 
-        # Tenta di riconoscere la parola "3060"
-        try:
-            # Rileva la parola "3060"
-            parola_riconosciuta = speech_recognition.recognize_google(audio_data)
+        # Ottieni l'audio del client
+        audio = client.voice_client.recv()
 
-            # Se la parola è "3060", disconnette l'utente che l'ha pronunciata
-            if parola_riconosciuta == "3060":
-                # Disconnette l'utente
-                await utente.edit(voice_channel=None)
+        # Converti l'audio in testo
+        text = client.voice_client.recognize_speech(audio)
 
-        # Se c'è stato un errore nel riconoscimento vocale
-        except sr.UnknownValueError:
-            pass
-        except sr.RequestError:
-            pass
+        # Controlla se il testo contiene la parola "3060"
+        if text.lower().find("3060") != -1:
+            # Disconnetti l'utente che ha pronunciato la parola
+            await client.voice_client.disconnect()
 
-# Avvia la funzione che ascolta
-@client.event
-async def on_message(message):
-    if message.author != client.user:
-        if message.content.startswith("ping"):
-            await message.channel.send("pong")
 
-# Avvia la funzione che ascolta
-client.loop.create_task(ascolta(message.author))
-
-client.run("MTE3MjYzMTE4Nzk2NjE0MDUyNw.GmxcoS.NN-WCbGlqloXc5we17kfTs-dLkqrMvbIEGMYQs")
+client.run(TOKEN)
