@@ -19,5 +19,3 @@ async def on_message(message):
 
 # Avvia il bot
 client.run("TOKEN")
-
-// aaaaaaaaaaaaaaaa
