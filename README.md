@@ -1,5 +1,2 @@
 # MimmoBot
-pdbiUJSJSJSJSJSJSJSJSJSJSJSJSJSJSSSS
-dsv
-fsdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddda
-asdddddddddddddddddddddd
+è un bot molto bello
