@@ -1,7 +1,1 @@
 # MimmoBot
-pdbiUJSJSJSJSJSJSJSJSJSJSJSJSJSJSSSS
-dsv
-fsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddsadasdasdasdasdasdddddddsdddddddddddddddddddddhgghghghghddddddddddddddddddasdfsdfs
-asddddddddddddddddddddddcdfxrrrrrrrrrr
-fddfdfff
-sdfd
